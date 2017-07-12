@@ -10,7 +10,8 @@ namespace aspnetcore_vega_sample.Mapping
         {
             CreateMap<Make, MakeResource>();
             CreateMap<Model, ModelResource>();
-            
+            CreateMap<Feature, FeatureResource>();
+
         }
     }
 }

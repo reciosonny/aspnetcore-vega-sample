@@ -11,5 +11,7 @@ namespace aspnetcore_vega_sample.Persistence
         }
 
         public DbSet<Make> Makes { get; set; }
+        public DbSet<Feature> Features { get; set; }
+
     }
 }
