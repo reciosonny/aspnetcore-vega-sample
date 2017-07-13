@@ -1,0 +1,14 @@
+{
+	modelId: 1,
+	isRegistered: true,
+	contactName: 'name',
+	contactEmail: 'email',
+	contactPhone: 'phone',
+	lastUpdate: '2000-01-01',
+	features: [
+		{ featureId: 1 },
+		{ featureId: 2 },
+		{ featureId: 3 }
+		
+	]
+}
