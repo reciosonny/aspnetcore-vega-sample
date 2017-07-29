@@ -56,7 +56,7 @@ namespace aspnetcore_vega_sample.Controllers
                 return BadRequest(ModelState);
 
             // var vehicle = await context.Vehicles.FindAsync(id);
-            var vehicle = await vehicleRepository.GetVehicle(id, includeRelated:false);
+            var vehicle = await vehicleRepository.GetVehicle(id, includeRelated:true);
 
             mapper.Map<SaveVehicleResource, Vehicle>(vehicleResource, vehicle);
             vehicle.LastUpdate = DateTime.Now;
