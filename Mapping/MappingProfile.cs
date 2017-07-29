@@ -1,8 +1,8 @@
 using aspnetcore_vega_sample.Controllers.Resources;
-using aspnetcore_vega_sample.Models;
 using AutoMapper;
 using System.Linq;
 using System.Collections.Generic;
+using aspnetcore_vega_sample.Core.Models;
 
 namespace aspnetcore_vega_sample.Mapping
 {

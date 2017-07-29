@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace aspnetcore_vega_sample.Models
+namespace aspnetcore_vega_sample.Core.Models
 {
     public class Feature
     {

@@ -1,4 +1,4 @@
-using aspnetcore_vega_sample.Models;
+using aspnetcore_vega_sample.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace aspnetcore_vega_sample.Persistence
@@ -9,7 +9,6 @@ namespace aspnetcore_vega_sample.Persistence
         public DbSet<Feature> Features { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Model> Models { get; set; }
-        
         
         public VegaDbContext(DbContextOptions<VegaDbContext> options) : base(options)
         {

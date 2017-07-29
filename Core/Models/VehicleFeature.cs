@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace aspnetcore_vega_sample.Models
+namespace aspnetcore_vega_sample.Core.Models
 {
     ///<Summary>
     /// note: Intermediary to initiate many-to-many relationships

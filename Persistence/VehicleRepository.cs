@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
-using aspnetcore_vega_sample.Models;
+using aspnetcore_vega_sample.Core;
+using aspnetcore_vega_sample.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace aspnetcore_vega_sample.Persistence

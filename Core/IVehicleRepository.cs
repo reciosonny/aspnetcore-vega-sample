@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using aspnetcore_vega_sample.Models;
+using aspnetcore_vega_sample.Core.Models;
 
-namespace aspnetcore_vega_sample.Persistence
+namespace aspnetcore_vega_sample.Core
 {
     public interface IVehicleRepository
     {

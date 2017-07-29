@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
-using aspnetcore_vega_sample.Models;
 
 namespace aspnetcore_vega_sample.Controllers.Resources
 {

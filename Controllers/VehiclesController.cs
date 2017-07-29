@@ -1,7 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using aspnetcore_vega_sample.Controllers.Resources;
-using aspnetcore_vega_sample.Models;
+using aspnetcore_vega_sample.Core;
+using aspnetcore_vega_sample.Core.Models;
 using aspnetcore_vega_sample.Persistence;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -11,16 +12,15 @@ namespace aspnetcore_vega_sample.Controllers
 {
 
     [Route("/api/vehicles")]
-    public class VehiclesController : Controller
-    {
+    public class VehiclesController : Controller {
         private readonly IMapper mapper;
-        private readonly VegaDbContext context;
         private readonly IVehicleRepository vehicleRepository;
-        public VehiclesController(IMapper mapper, VegaDbContext context, IVehicleRepository vehicleRepository)
+        private readonly IUnitOfWork unitOfWork;
+        public VehiclesController(IMapper mapper, IVehicleRepository vehicleRepository, IUnitOfWork unitOfWork)
         {
             this.vehicleRepository = vehicleRepository;
-            this.context = context;
             this.mapper = mapper;
+            this.unitOfWork = unitOfWork;
         }
 
         [HttpPost]
@@ -29,18 +29,18 @@ namespace aspnetcore_vega_sample.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var model = await context.Models.FindAsync(vehicleResource.ModelId);
-            if (model == null)
-            {
-                ModelState.AddModelError("ModelId", "Invalid Model ID");
-                return BadRequest(ModelState);
-            }
+            // var model = await context.Models.FindAsync(vehicleResource.ModelId);
+            // if (model == null)
+            // {
+            //     ModelState.AddModelError("ModelId", "Invalid Model ID");
+            //     return BadRequest(ModelState);
+            // }
 
             var vehicle = mapper.Map<SaveVehicleResource, Vehicle>(vehicleResource);
             vehicle.LastUpdate = DateTime.Now;
 
             vehicleRepository.Add(vehicle);
-            await context.SaveChangesAsync();
+            await unitOfWork.CompleteAsync();
 
             vehicle = await vehicleRepository.GetVehicle(vehicle.Id);
 
@@ -56,12 +56,12 @@ namespace aspnetcore_vega_sample.Controllers
                 return BadRequest(ModelState);
 
             // var vehicle = await context.Vehicles.FindAsync(id);
-            var vehicle = await vehicleRepository.GetVehicle(id);
+            var vehicle = await vehicleRepository.GetVehicle(id, includeRelated:false);
 
             mapper.Map<SaveVehicleResource, Vehicle>(vehicleResource, vehicle);
             vehicle.LastUpdate = DateTime.Now;
 
-            await context.SaveChangesAsync();
+            await unitOfWork.CompleteAsync();
 
             var result = mapper.Map<Vehicle, VehicleResource>(vehicle);
 
@@ -71,13 +71,13 @@ namespace aspnetcore_vega_sample.Controllers
         [HttpDelete("{id}")] // /api/vehicles/{id}
         public async Task<IActionResult> DeleteVehicle(int id)
         {
-            var vehicle = await context.Vehicles.FindAsync(id);
+            var vehicle = await vehicleRepository.GetVehicle(id, includeRelated:false);
 
             if (vehicle == null)
                 return NotFound();
 
             vehicleRepository.Remove(vehicle);
-            await context.SaveChangesAsync();
+            await unitOfWork.CompleteAsync();
 
             return Ok(id);
         }

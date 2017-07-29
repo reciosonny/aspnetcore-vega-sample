@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace aspnetcore_vega_sample.Models
+namespace aspnetcore_vega_sample.Core.Models
 {
     [Table("Models")]
     public class Model
