@@ -10,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace aspnetcore_vega_sample.Controllers
 {
-
     [Route("/api/vehicles")]
     public class VehiclesController : Controller {
         private readonly IMapper mapper;
