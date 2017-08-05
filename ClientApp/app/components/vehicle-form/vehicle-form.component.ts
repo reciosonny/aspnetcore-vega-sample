@@ -3,6 +3,9 @@ import { Component, OnInit } from '@angular/core';
 // import { FeatureService } from "../../services/feature.service";
 import { VehicleService } from "../../services/vehicle.service";
 import { ToastyService } from "ng2-toasty";
+import { Router, ActivatedRoute } from "@angular/router";
+import { Observable } from "rxjs/Observable";
+import "rxjs/add/Observable/forkJoin";
 
 @Component({
   selector: 'app-vehicle-form',
@@ -20,18 +23,72 @@ export class VehicleFormComponent implements OnInit {
   };
   
   // constructor(private makeService: MakeService, private featureService: FeatureService) { }
-  constructor(private vehicleService: VehicleService,
-              private toastyService: ToastyService) { }
+  constructor(
+    private route: ActivatedRoute, //to read route parameters
+    private router: Router, //to redirect users to another page
+    private vehicleService: VehicleService,
+    private toastyService: ToastyService
+  ) { 
+    route.params.subscribe(p => {
+      this.vehicle.id = +p['id'];
+    });
+
+  }
 
   ngOnInit() {
-    this.vehicleService.getMakes().subscribe(makes => {
-      this.makes = makes;
-      console.log(this.makes);
+
+    var sources = [
+      this.vehicleService.getMakes(),
+      this.vehicleService.getFeatures()
+    ];
+
+    if (this.vehicle.id) {
+      this.vehicleService.getVehicle(this.vehicle.id)      
+    }
+
+    Observable.forkJoin(sources).subscribe(data => {
+      console.log('done loading all services');
+
+      this.makes = data[0];
+      this.features = data[1];
+      if (this.vehicle.id) {
+        this.vehicle = data[2];
+      }
+    }, err => {
+      if (err.status == 404) {
+        this.router.navigate(['/home']); //redirects to homepage if vehicle doesn't exists
+      }
     });
+
+    /* This was commented out in favor of observables/promises */
+    // this.vehicleService
+    //   .getVehicle(this.vehicle.id)
+    //   .subscribe(v => {
+    //     this.vehicle = v;
+    //   }, err => {
+    //     if (err.status == 404) {
+    //       this.router.navigate(['/home']); //redirects to homepage if vehicle doesn't exists
+    //     }
+    //   });
+
+    // this.vehicleService.getMakes().subscribe(makes => {
+    //   this.makes = makes;
+    //   console.log(this.makes);
+    // });
+    /**END**/
+
     this.vehicleService.getFeatures().subscribe(features => 
       this.features = features);
   }
-    
+  
+  private setVehicle(v) {
+    this.vehicle.id = v.id;
+    this.vehicle.makeId = v.make.id;
+    this.vehicle.modelId = v.model.id;
+
+
+  }
+
   onMakeChange() {
     var selectedMake = this.makes.find(m => m.id == this.vehicle.makeId);
     this.models = selectedMake ? selectedMake.models : [];

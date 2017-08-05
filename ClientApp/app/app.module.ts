@@ -1,3 +1,5 @@
+import * as Raven from 'raven-js';
+
 import { FormsModule } from '@angular/forms'; 
 import { NgModule, ErrorHandler } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -17,6 +19,11 @@ import { FeatureService } from "./services/feature.service";
 import { VehicleService } from "./services/vehicle.service";
 import { AppErrorHandler } from "./app.error-handler";
 
+Raven
+  .config('https://ecff8b6e150f451e980553fe3a60f7c6@sentry.io/200013')
+  .install();
+
+  
 @NgModule({
     bootstrap: [ AppComponent ],
     declarations: [
@@ -34,6 +41,7 @@ import { AppErrorHandler } from "./app.error-handler";
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'vehicles/new', component: VehicleFormComponent },
+            { path: 'vehicles/:id', component: VehicleFormComponent },
             { path: 'home', component: HomeComponent },
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
