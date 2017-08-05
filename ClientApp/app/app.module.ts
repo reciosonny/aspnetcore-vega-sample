@@ -1,5 +1,5 @@
 import { FormsModule } from '@angular/forms'; 
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ToastyModule } from "ng2-toasty";
 import { UniversalModule } from 'angular2-universal';
@@ -15,6 +15,7 @@ import { VehicleFormComponent } from './Components/vehicle-form/vehicle-form.com
 import { MakeService } from "./services/make.service";
 import { FeatureService } from "./services/feature.service";
 import { VehicleService } from "./services/vehicle.service";
+import { AppErrorHandler } from "./app.error-handler";
 
 @NgModule({
     bootstrap: [ AppComponent ],
@@ -40,6 +41,7 @@ import { VehicleService } from "./services/vehicle.service";
         ])
     ],
     providers: [
+        { provide: ErrorHandler, useClass: AppErrorHandler },
         VehicleService
     ]
 
