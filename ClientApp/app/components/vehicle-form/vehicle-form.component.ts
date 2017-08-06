@@ -41,9 +41,9 @@ export class VehicleFormComponent implements OnInit {
       this.vehicleService.getMakes(),
       this.vehicleService.getFeatures()
     ];
-
+    console.log('vehicle #: ',this.vehicle.id);
     if (this.vehicle.id) {
-      this.vehicleService.getVehicle(this.vehicle.id)      
+      sources.push(this.vehicleService.getVehicle(this.vehicle.id));
     }
 
     Observable.forkJoin(sources).subscribe(data => {
@@ -55,6 +55,7 @@ export class VehicleFormComponent implements OnInit {
         this.vehicle = data[2];
       }
     }, err => {
+      console.log('error observables...');
       if (err.status == 404) {
         this.router.navigate(['/home']); //redirects to homepage if vehicle doesn't exists
       }
@@ -75,18 +76,17 @@ export class VehicleFormComponent implements OnInit {
     //   this.makes = makes;
     //   console.log(this.makes);
     // });
+    
+    // this.vehicleService.getFeatures().subscribe(features => 
+    //   this.features = features);
     /**END**/
 
-    this.vehicleService.getFeatures().subscribe(features => 
-      this.features = features);
   }
   
   private setVehicle(v) {
     this.vehicle.id = v.id;
     this.vehicle.makeId = v.make.id;
     this.vehicle.modelId = v.model.id;
-
-
   }
 
   onMakeChange() {
