@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using aspnetcore_vega_sample.Core;
 using aspnetcore_vega_sample.Core.Models;
@@ -24,6 +25,15 @@ namespace aspnetcore_vega_sample.Persistence
                     .Include(v => v.Model)
                         .ThenInclude(vf => vf.Make)
                     .SingleOrDefaultAsync(v => v.Id == id);
+        }
+
+        public async Task<IEnumerable<Vehicle>> GetVehicles() {
+            return await context.Vehicles
+                    .Include(v => v.Features)
+                        .ThenInclude(m => m.Feature)
+                    .Include(v => v.Model)
+                        .ThenInclude(vf => vf.Make)
+                    .ToListAsync();
         }
 
         public void Add(Vehicle v) {

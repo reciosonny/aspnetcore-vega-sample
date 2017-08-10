@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using aspnetcore_vega_sample.Controllers.Resources;
 using aspnetcore_vega_sample.Core;
@@ -91,6 +92,12 @@ namespace aspnetcore_vega_sample.Controllers
 
             VehicleResource model = mapper.Map<Vehicle, VehicleResource>(vehicle);
             return Ok(model);
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<VehicleResource>> GetVehicles() {
+            var vehicles = await vehicleRepository.GetVehicles();
+
         }
 
     }
