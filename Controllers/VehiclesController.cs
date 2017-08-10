@@ -97,6 +97,7 @@ namespace aspnetcore_vega_sample.Controllers
         public async Task<IEnumerable<VehicleResource>> GetVehicles() {
             var vehicles = await vehicleRepository.GetVehicles();
 
+            return mapper.Map<IEnumerable<Vehicle>, IEnumerable<VehicleResource>>(vehicles);
         }
 
     }
