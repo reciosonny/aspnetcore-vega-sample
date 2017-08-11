@@ -27,6 +27,9 @@ namespace aspnetcore_vega_sample.Mapping
 
 
             //API Resource to Domain
+            CreateMap<VehicleQueryResource, VehicleQuery>();
+            CreateMap<VehicleQuery, VehicleQueryResource>();
+
             CreateMap<SaveVehicleResource, Vehicle>()
                 .ForMember(v => v.Id, opt => opt.Ignore())
                 .ForMember(v => v.ContactName, opt => opt.MapFrom(vr => vr.Contact.Name))
