@@ -9,9 +9,8 @@ import { VehicleService } from './../../services/vehicle.service';
 })
 export class VehicleListComponent implements OnInit {
   vehicles: Vehicle[];
-  allVehicles: Vehicle[];
   makes: KeyValuePair[];
-  filter: any = {};
+  query: any = {};
 
   constructor(private vehicleService: VehicleService) { }
 
@@ -19,28 +18,44 @@ export class VehicleListComponent implements OnInit {
     this.vehicleService.getMakes()
       .subscribe(makes => this.makes = makes);
 
-    this.vehicleService.getVehicles()
-      .subscribe(vehicles => this.vehicles = this.allVehicles = vehicles);
+    this.populateVehicles();
+  }
+
+  private populateVehicles() {
+    this.vehicleService.getVehicles(this.query)
+      .subscribe(result => this.vehicles = result);
   }
 
   onFilterChange() {
-    var vehicles = this.allVehicles;
+    this.populateVehicles();
+    // var vehicles = this.allVehicles;
 
-    if (this.filter.makeId) {
-      vehicles = vehicles.filter(v => v.make.id == this.filter.makeId);
-    }
+    // if (this.query.makeId) {
+    //   vehicles = vehicles.filter(v => v.make.id == this.query.makeId);
+    // }
 
-    if (this.filter.modelId) {
-      vehicles = vehicles.filter(v => v.model.id == this.filter.modelId);
-    }
+    // if (this.query.modelId) {
+    //   vehicles = vehicles.filter(v => v.model.id == this.query.modelId);
+    // }
     
-    this.vehicles = vehicles;
+    // this.vehicles = vehicles;
   }
 
   resetFilter() {
     console.log('filter reset...');
-    this.filter = {};
+    this.query = {};
     this.onFilterChange();
+  }
+
+  sortBy(columnName) {
+    if (this.query.sortBy == columnName) {
+      this.query.isSortAscending = false
+    } else {
+      this.query.sortBy = columnName;
+      this.query.isSortAscending = true;
+    }
+
+    this.populateVehicles();
   }
 
 
