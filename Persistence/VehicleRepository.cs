@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using aspnetcore_vega_sample.Core;
 using aspnetcore_vega_sample.Core.Models;
+using aspnetcore_vega_sample.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 
@@ -33,24 +34,29 @@ namespace aspnetcore_vega_sample.Persistence
 
         public async Task<IEnumerable<Vehicle>> GetVehicles(VehicleQuery queryObj) {
             IQueryable<Vehicle> query = context.Vehicles
-                    .Include(v => v.Features)
+                    .Include(v => v.Features) //entity framework automatically adds "order by id" when using include syntax
                         .ThenInclude(m => m.Feature)
                     .Include(v => v.Model)
                         .ThenInclude(vf => vf.Make)
                     .AsQueryable();
-                    // .ToListAsync();
-            var columnsMap = new Dictionary<string, Expression<Func<Vehicle, object>>>() {
-                ["make"] = v => v.Model.Make.Name,
-                ["model"] = v => v.Model.Name,
-                ["contactName"] = v => v.ContactName,
-                ["id"] = v => v.Id
-            };
-
-            query = ApplyOrdering(queryObj, query, columnsMap);
+            // .ToListAsync();
 
             if (queryObj.MakeId.HasValue) {
                 query = query.Where(v => v.Model.MakeId == queryObj.MakeId.Value);
             }
+            if (queryObj.ModelId.HasValue) {
+                query = query.Where(v => v.ModelId == queryObj.ModelId.Value);
+            }
+
+            var columnsMap = new Dictionary<string, Expression<Func<Vehicle, object>>>() {
+                ["make"] = v => v.Model.Make.Name,
+                ["model"] = v => v.Model.Name,
+                ["contactName"] = v => v.ContactName
+                // ["id"] = v => v.Id
+            };
+
+            // query = ApplyOrdering(queryObj, query, columnsMap);
+            query = query.ApplyOrdering(queryObj, columnsMap);
 
             return await query.ToListAsync();
         }
