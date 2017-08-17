@@ -8,9 +8,14 @@ import { VehicleService } from './../../services/vehicle.service';
   styleUrls: ['./vehicle-list.component.css']
 })
 export class VehicleListComponent implements OnInit {
-  vehicles: Vehicle[];
+
+  private readonly PAGE_SIZE = 3;
+
+  queryResult: any = {};
   makes: KeyValuePair[];
-  query: any = {};
+  query: any = {
+    pageSize: this.PAGE_SIZE
+  };
   columns = [
     { title: 'Id' },
     { title: 'Contact Name', key: 'contactName', isSortable: true },
@@ -30,28 +35,20 @@ export class VehicleListComponent implements OnInit {
 
   private populateVehicles() {
     this.vehicleService.getVehicles(this.query)
-      .subscribe(result => this.vehicles = result);
+      .subscribe(result => this.queryResult = result);
   }
 
   onFilterChange() {
+    this.query.page = 1;
     this.populateVehicles();
-    // var vehicles = this.allVehicles;
-
-    // if (this.query.makeId) {
-    //   vehicles = vehicles.filter(v => v.make.id == this.query.makeId);
-    // }
-
-    // if (this.query.modelId) {
-    //   vehicles = vehicles.filter(v => v.model.id == this.query.modelId);
-    // }
-    
-    // this.vehicles = vehicles;
   }
 
   resetFilter() {
-    console.log('filter reset...');
-    this.query = {};
-    this.onFilterChange();
+    this.query = {
+      page: 1,
+      pageSize: this.PAGE_SIZE
+    };
+    this.populateVehicles();
   }
 
   sortBy(columnName) {
@@ -62,6 +59,11 @@ export class VehicleListComponent implements OnInit {
       this.query.isSortAscending = true;
     }
 
+    this.populateVehicles();
+  }
+
+  onPageChange(page) {
+    this.query.page = page;
     this.populateVehicles();
   }
 

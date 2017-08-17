@@ -32,7 +32,9 @@ namespace aspnetcore_vega_sample.Persistence
                     .SingleOrDefaultAsync(v => v.Id == id);
         }
 
-        public async Task<IEnumerable<Vehicle>> GetVehicles(VehicleQuery queryObj) {
+        public async Task<QueryResult<Vehicle>> GetVehicles(VehicleQuery queryObj) {
+            var result = new QueryResult<Vehicle>();
+
             IQueryable<Vehicle> query = context.Vehicles
                     .Include(v => v.Features) //entity framework automatically adds "order by id" when using include syntax
                         .ThenInclude(m => m.Feature)
@@ -57,16 +59,13 @@ namespace aspnetcore_vega_sample.Persistence
 
             // query = ApplyOrdering(queryObj, query, columnsMap);
             query = query.ApplyOrdering(queryObj, columnsMap);
+            result.TotalItems = await query.CountAsync();
 
-            return await query.ToListAsync();
-        }
+            query = query.ApplyPaging(queryObj);
 
-        private IQueryable<Vehicle> ApplyOrdering(VehicleQuery queryObj, IQueryable<Vehicle> query, Dictionary<string, Expression<Func<Vehicle, object>>> columnsMap) {
-            query = queryObj.IsSortAscending ? 
-                        query.OrderBy(columnsMap[queryObj.SortBy]) : 
-                        query.OrderByDescending(columnsMap[queryObj.SortBy]);
+            result.Items = await query.ToListAsync();
 
-            return query;
+            return result;
         }
 
         public void Add(Vehicle v) {

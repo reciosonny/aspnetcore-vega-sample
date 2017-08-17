@@ -19,6 +19,7 @@ import { MakeService } from "./services/make.service";
 import { FeatureService } from "./services/feature.service";
 import { VehicleService } from "./services/vehicle.service";
 import { AppErrorHandler } from "./app.error-handler";
+import { PaginationComponent } from "./components/shared/pagination.component";
 
 Raven
   .config('https://ecff8b6e150f451e980553fe3a60f7c6@sentry.io/200013')
@@ -34,7 +35,8 @@ Raven
         FetchDataComponent,
         HomeComponent,
         VehicleFormComponent,
-        VehicleListComponent
+        VehicleListComponent,
+        PaginationComponent
     ],
     imports: [
         FormsModule,
