@@ -9,6 +9,8 @@ namespace aspnetcore_vega_sample.Persistence
         public DbSet<Feature> Features { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Model> Models { get; set; }
+        public DbSet<Photo> Photos { get; set; }
+        
         
         public VegaDbContext(DbContextOptions<VegaDbContext> options) : base(options)
         {

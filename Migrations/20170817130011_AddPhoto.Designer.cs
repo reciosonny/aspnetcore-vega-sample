@@ -8,8 +8,8 @@ using aspnetcore_vega_sample.Persistence;
 namespace AspnetcoreVegaSample.Migrations
 {
     [DbContext(typeof(VegaDbContext))]
-    [Migration("20170817113836_test")]
-    partial class test
+    [Migration("20170817130011_AddPhoto")]
+    partial class AddPhoto
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -63,6 +63,24 @@ namespace AspnetcoreVegaSample.Migrations
                     b.ToTable("Models");
                 });
 
+            modelBuilder.Entity("aspnetcore_vega_sample.Core.Models.Photo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<int?>("VehicleId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VehicleId");
+
+                    b.ToTable("Photos");
+                });
+
             modelBuilder.Entity("aspnetcore_vega_sample.Core.Models.Vehicle", b =>
                 {
                     b.Property<int>("Id")
@@ -111,6 +129,13 @@ namespace AspnetcoreVegaSample.Migrations
                         .WithMany("Models")
                         .HasForeignKey("MakeId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("aspnetcore_vega_sample.Core.Models.Photo", b =>
+                {
+                    b.HasOne("aspnetcore_vega_sample.Core.Models.Vehicle")
+                        .WithMany("Photos")
+                        .HasForeignKey("VehicleId");
                 });
 
             modelBuilder.Entity("aspnetcore_vega_sample.Core.Models.Vehicle", b =>

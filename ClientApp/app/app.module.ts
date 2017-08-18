@@ -20,6 +20,7 @@ import { FeatureService } from "./services/feature.service";
 import { VehicleService } from "./services/vehicle.service";
 import { AppErrorHandler } from "./app.error-handler";
 import { PaginationComponent } from "./components/shared/pagination.component";
+import { ViewVehicleComponent } from './components/view-vehicle/view-vehicle';
 
 Raven
   .config('https://ecff8b6e150f451e980553fe3a60f7c6@sentry.io/200013')
@@ -36,7 +37,8 @@ Raven
         HomeComponent,
         VehicleFormComponent,
         VehicleListComponent,
-        PaginationComponent
+        PaginationComponent,
+        ViewVehicleComponent
     ],
     imports: [
         FormsModule,
@@ -45,7 +47,8 @@ Raven
         RouterModule.forRoot([
             { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
             { path: 'vehicles/new', component: VehicleFormComponent },
-            { path: 'vehicles/:id', component: VehicleFormComponent },
+            { path: 'vehicles/edit/:id', component: VehicleFormComponent },
+            { path: 'vehicles/:id', component: ViewVehicleComponent },
             { path: 'vehicles', component: VehicleListComponent },
             { path: 'home', component: HomeComponent },
             { path: 'counter', component: CounterComponent },
