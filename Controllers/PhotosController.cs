@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using aspnetcore_vega_sample.Controllers.Resources;
@@ -22,9 +23,11 @@ namespace aspnetcore_vega_sample.Controllers
         private readonly IMapper mapper;
 
         private readonly PhotoSettings photoSettings;
+        private readonly IPhotoRepository photoRepository;
 
-        public PhotosController(IHostingEnvironment host, IVehicleRepository repository, IUnitOfWork unitOfWork, IMapper mapper, IOptionsSnapshot<PhotoSettings> options)
+        public PhotosController(IHostingEnvironment host, IVehicleRepository repository, IPhotoRepository photoRepository, IUnitOfWork unitOfWork, IMapper mapper, IOptionsSnapshot<PhotoSettings> options)
         {
+            this.photoRepository = photoRepository;
             this.photoSettings = options.Value;
             this.mapper = mapper;
             this.unitOfWork = unitOfWork;
@@ -32,6 +35,15 @@ namespace aspnetcore_vega_sample.Controllers
             this.host = host;
             // host.WebRootPath //returns address of wwwroot folder
         }
+
+        [HttpGet]
+        public async Task<IEnumerable<PhotoResource>> GetPhotos(int vehicleId)
+        {
+            var photos = await photoRepository.GetPhotos(vehicleId);
+
+            return mapper.Map<IEnumerable<Photo>, IEnumerable<PhotoResource>>(photos);
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Upload(int vehicleId, IFormFile file)

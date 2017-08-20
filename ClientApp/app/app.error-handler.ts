@@ -14,15 +14,6 @@ export class AppErrorHandler implements ErrorHandler {
     }
 
     handleError(error: any): void {
-        console.log('testing...');
-        if (!isDevMode()) {
-            Raven.captureException(error.originalError || error);
-            console.log("error handler running in production mode...");
-        }
-        else {
-            console.log("error handler running in development mode...");
-            throw error;
-        }
         
         this.ngZone.run(() => {
             this.toastyService.error({
@@ -32,8 +23,17 @@ export class AppErrorHandler implements ErrorHandler {
                 showClose: true,
                 timeout: 5000
             });
-
         });
+
+        if (!isDevMode()) {
+            Raven.captureException(error.originalError || error);
+            console.log("error handler running in production mode...");
+        }
+        else {
+            console.log("error handler running in development mode...");
+            throw error;
+        }
+        
     }
     
 }
