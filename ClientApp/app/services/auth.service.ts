@@ -23,9 +23,9 @@ export class Auth {
 
   private onUserAuthenticated(authResult) {
     console.log(authResult);
-    localStorage.setItem('token', authResult.accessToken);
+    localStorage.setItem('token', authResult.idToken);
 
-    this.lock.getUserInfo(authResult.accessToken, (error, profile) => {
+    this.lock.getUserInfo(authResult.idToken, (error, profile) => {
       if (error)
         throw error;
 
