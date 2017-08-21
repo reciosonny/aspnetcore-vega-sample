@@ -6,6 +6,7 @@ using aspnetcore_vega_sample.Core;
 using aspnetcore_vega_sample.Core.Models;
 using aspnetcore_vega_sample.Persistence;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,6 +25,7 @@ namespace aspnetcore_vega_sample.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateVehicle([FromBody] SaveVehicleResource vehicleResource)
         {
             if (!ModelState.IsValid)
@@ -50,6 +52,7 @@ namespace aspnetcore_vega_sample.Controllers
         }
 
         [HttpPut("{id}")] // /api/vehicles/{id}
+        [Authorize]
         public async Task<IActionResult> UpdateVehicle(int id, [FromBody] SaveVehicleResource vehicleResource)
         {
             if (!ModelState.IsValid)
@@ -69,6 +72,7 @@ namespace aspnetcore_vega_sample.Controllers
         }
 
         [HttpDelete("{id}")] // /api/vehicles/{id}
+        [Authorize]
         public async Task<IActionResult> DeleteVehicle(int id)
         {
             var vehicle = await vehicleRepository.GetVehicle(id, includeRelated:false);

@@ -23,6 +23,7 @@ import { ViewVehicleComponent } from './components/view-vehicle/view-vehicle';
 import { PhotoService } from "./services/photo.service";
 import { BrowserXhrWithProgress, ProgressService } from "./services/progress.service";
 import { BrowserXhr } from "@angular/http";
+import { Auth } from "./services/auth.service";
 
 Raven
   .config('https://ecff8b6e150f451e980553fe3a60f7c6@sentry.io/200013')
@@ -61,6 +62,7 @@ Raven
     providers: [
         { provide: ErrorHandler, useClass: AppErrorHandler },
         { provide: BrowserXhr, useClass: BrowserXhrWithProgress },
+        Auth,
         VehicleService,
         PhotoService,
         ProgressService

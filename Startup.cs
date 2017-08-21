@@ -71,7 +71,7 @@ namespace AspnetcoreVegaSample
                 Audience = "https://api.vega.com",
                 Authority = "https://vegaprojectsonny.auth0.com/"
             };
-            app.UseJwtBearerAuthentication(options);
+            app.UseJwtBearerAuthentication(options); //installing middleware to verify json web token passed into the request
             
             app.UseMvc(routes =>
             {

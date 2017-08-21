@@ -4,6 +4,7 @@ using aspnetcore_vega_sample.Controllers.Resources;
 using aspnetcore_vega_sample.Core.Models;
 using aspnetcore_vega_sample.Persistence;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
