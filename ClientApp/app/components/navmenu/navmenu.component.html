@@ -16,7 +16,7 @@
                     <a href="https://vegaprojectsonny.auth0.com/login?client=phuUujhv4suLhjB1UXw359Idg2or70Fw" *ngIf="!auth.authenticated()">
                         <span class='glyphicon glyphicon-user'></span> Login
                     </a>
-                    <a (click)="auth.logout()" *ngIf="auth.authenticated()">
+                    <a (click)="auth.logout()" href="#" *ngIf="auth.authenticated()">
                         <span class='glyphicon glyphicon-user'></span> Logout
                     </a>
                 </li>

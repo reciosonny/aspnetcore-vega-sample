@@ -1,6 +1,5 @@
 import { JwtHelper } from 'angular2-jwt';
 // app/auth.service.ts
-
 import { Injectable }      from '@angular/core';
 import { tokenNotExpired } from 'angular2-jwt';
 
@@ -15,10 +14,28 @@ export class Auth {
   // Configure Auth0
   lock = new Auth0Lock('phuUujhv4suLhjB1UXw359Idg2or70Fw', 'vegaprojectsonny.auth0.com', {});
 
-  constructor() {    
+  constructor() {
+    this.profile = JSON.parse(localStorage.getItem('profile'));
+
+
     this.readUserFromLocalStorage();
 
-    this.lock.on("authenticated", (authResult) => this.onUserAuthenticated(authResult));
+    this.lock.on("authenticated", (authResult) => {
+      this.onUserAuthenticated(authResult);
+
+      this.lock.getUserInfo(authResult.accessToken, (error, profile) => {
+        if (error) {
+          throw error;
+        }
+
+        console.log(profile);
+        localStorage.setItem('profile', JSON.stringify(profile));
+        this.profile = profile;
+
+
+      })
+
+    });
   }
 
   private onUserAuthenticated(authResult) {
