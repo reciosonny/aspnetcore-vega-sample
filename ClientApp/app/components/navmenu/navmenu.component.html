@@ -13,7 +13,7 @@
         <div class='navbar-collapse collapse'>
             <ul class='nav navbar-nav'>
                 <li [routerLinkActive]="['link-active']">
-                    <a (click)="auth.login()" *ngIf="!auth.authenticated()">
+                    <a href="https://vegaprojectsonny.auth0.com/login?client=phuUujhv4suLhjB1UXw359Idg2or70Fw" *ngIf="!auth.authenticated()">
                         <span class='glyphicon glyphicon-user'></span> Login
                     </a>
                     <a (click)="auth.logout()" *ngIf="auth.authenticated()">
