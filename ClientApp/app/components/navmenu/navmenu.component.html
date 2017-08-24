@@ -7,7 +7,7 @@
                 <span class='icon-bar'></span>
                 <span class='icon-bar'></span>
             </button>
-            <a class='navbar-brand' [routerLink]="['/home']">AspnetcoreVegaSample</a>
+            <a class='navbar-brand' [routerLink]="['/home']">Vega</a>
         </div>
         <div class='clearfix'></div>
         <div class='navbar-collapse collapse'>
@@ -16,11 +16,11 @@
                     <a href="https://vegaprojectsonny.auth0.com/login?client=phuUujhv4suLhjB1UXw359Idg2or70Fw" *ngIf="!auth.authenticated()">
                         <span class='glyphicon glyphicon-user'></span> Login
                     </a>
-                    <a (click)="auth.logout()" href="#" *ngIf="auth.authenticated()">
+                    <a (click)="auth.logout()" *ngIf="auth.authenticated()">
                         <span class='glyphicon glyphicon-user'></span> Logout
                     </a>
                 </li>
-                <li [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{exact: true}">
+                <li [routerLinkActive]="['link-active']"  [routerLinkActiveOptions]="{exact: true}">
                     <a [routerLink]="['/vehicles']">
                         <span class='glyphicon glyphicon-home'></span> Vehicles
                     </a>
@@ -30,14 +30,9 @@
                         <span class='glyphicon glyphicon-plus'></span> New Vehicle
                     </a>
                 </li>
-                <li [routerLinkActive]="['link-active']">
-                    <a [routerLink]="['/counter']">
-                        <span class='glyphicon glyphicon-education'></span> Counter
-                    </a>
-                </li>
-                <li [routerLinkActive]="['link-active']">
-                    <a [routerLink]="['/fetch-data']">
-                        <span class='glyphicon glyphicon-th-list'></span> Fetch data
+                <li [routerLinkActive]="['link-active']" *ngIf="auth.isInRole('Admin')">
+                    <a [routerLink]="['/admin']">
+                        <span class='glyphicon glyphicon-education'></span> Admin
                     </a>
                 </li>
             </ul>

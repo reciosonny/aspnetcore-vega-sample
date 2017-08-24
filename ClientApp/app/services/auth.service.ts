@@ -1,5 +1,6 @@
 import { JwtHelper } from 'angular2-jwt';
 // app/auth.service.ts
+
 import { Injectable }      from '@angular/core';
 import { tokenNotExpired } from 'angular2-jwt';
 
@@ -13,33 +14,14 @@ export class Auth {
 
   // Configure Auth0
   lock = new Auth0Lock('phuUujhv4suLhjB1UXw359Idg2or70Fw', 'vegaprojectsonny.auth0.com', {});
-
-  constructor() {
-    this.profile = JSON.parse(localStorage.getItem('profile'));
-
-
+  
+  constructor() {    
     this.readUserFromLocalStorage();
 
-    this.lock.on("authenticated", (authResult) => {
-      this.onUserAuthenticated(authResult);
-
-      this.lock.getUserInfo(authResult.accessToken, (error, profile) => {
-        if (error) {
-          throw error;
-        }
-
-        console.log(profile);
-        localStorage.setItem('profile', JSON.stringify(profile));
-        this.profile = profile;
-
-
-      })
-
-    });
+    this.lock.on("authenticated", (authResult) => this.onUserAuthenticated(authResult));
   }
 
   private onUserAuthenticated(authResult) {
-    console.log(authResult);
     localStorage.setItem('token', authResult.accessToken);
 
     this.lock.getUserInfo(authResult.accessToken, (error, profile) => {
@@ -59,7 +41,8 @@ export class Auth {
     if (token) {
       var jwtHelper = new JwtHelper();
       var decodedToken = jwtHelper.decodeToken(token);
-      this.roles = decodedToken['https://vega.com/roles'];
+      console.log(decodedToken);
+      this.roles = decodedToken['https://vega.com/roles'] || [];
     }
   }
 
